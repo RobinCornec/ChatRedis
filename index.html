@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Chat avec Redis</title>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <style>
+            #zonechat strong {
+                color: white;
+                background-color: black;
+                padding: 2px;
+            }
+        </style>
+    </head>
+
+     <body>
+
+        <h1>Chat avec Redis</h1>
+
+        <form action="/" method="post" id="formchat">
+            <input type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus />
+            <input type="submit" id="sendmessage" value="Envoyer" />
+        </form>
+
+
+        <section id="zonechat">
+        </section>
+
+
+        <script>
+            var pseudo = prompt('Pseudo ?');
+            var socket = io();
+
+            socket.emit('newclient', pseudo);
+            document.title = pseudo + ' - ' + document.title;
+            
+            $('#formchat').submit(function () {
+                var message = $('#message').val();
+                socket.emit('message', message);
+                $('#message').val('').focus();
+                return false;
+            });
+
+            
+            function insertMessage(pseudo, message) {
+                $('#zonechat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+            }
+
+
+            socket.on('redisMessage', function(data) {
+                console.log(data);
+                insertMessage(data.pseudo, data.message);
+            });
+
+            socket.on('newclient', function(pseudo) {
+                $('#zonechat').prepend('<p><em>' + pseudo + ' s\'est connecté</em></p>');
+            });
+                        
+        </script>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "redis_chat",
+  "version": "1.0.0",
+  "description": "Chat avec Redis",
+  "main": "app.js",
+  "dependencies": {
+    "express": "4.x",
+    "socket.io": "*",
+    "ioredis": "*",
+    "ent": "*"
+  },
+  "author": "CORNEC Robin",
+  "license": "ISC", 
+  "scripts": { 
+	"start" : "node app.js"
+  }
+}
